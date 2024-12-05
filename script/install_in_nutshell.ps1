@@ -1,7 +1,9 @@
 # Parameter help description
 param(
-    [Parameter(Mandatory=$false, HelpMessage="Indiquer si vous voulez installer Teams et VSCode")]
+    [Parameter(Mandatory=$false, HelpMessage="Put `$false if you do not want to install MS teams & VSCode")]
     [bool]$CompleteInstall = $true,
+    [Parameter(Mandatory=$false, HelpMessage="Indicate which user to add to the docker group")]
+    [string]$UserToAdd,
     [Parameter(Mandatory=$false, HelpMessage="Indicate where to install")]
     [string]$InstallPath = $(Get-Location).Path
 )
@@ -66,7 +68,7 @@ function InstallDocker {
     }
 }
 function CheckForDocker {
-    $isDockergroupHere = Get-LocalGroup | Where-Object {$_.Name -like "*docker*"}
+    $isDockergroupHere = Get-LocalGroup | Where-Object {$_.Name -like "*docker*"} 
     if($null -ne $isDockergroupHere){
         return $true
     }
@@ -90,7 +92,9 @@ if ($principalUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrat
     try {
         $isDockerHere = CheckForDocker
         if($isDockerHere){
-            $userToAdd = AskUserToAdd
+            if($null -eq $UserToAdd){
+                $userToAdd = AskUserToAdd
+            }
             Write-Output "Adding user to docker group"
             net localgroup docker-users $userToAdd /ADD
             Write-Output "Your user has been added to the docker-users group"
