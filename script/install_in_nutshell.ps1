@@ -22,7 +22,7 @@ function InstallTeams {
         #Remove-Item -Path "$InstallPath\MSTeamsSetup.exe" -Force
     }
     catch {
-        Write-Error "An error has been encountered: " + $_.Exception.Message
+        Write-Error ("An error has been encountered: " + $_.Exception.Message)
     }
 }
 function InstallVsCode {
@@ -38,7 +38,7 @@ function InstallVsCode {
         Write-Output "VSCode has been installed successfully"
     }
     catch {
-        Write-Error "An error has been encountered: " + $_.Exception.Message
+        Write-Error ("An error has been encountered: " + $_.Exception.Message)
     }
 }
 function InstallDocker {
@@ -55,7 +55,7 @@ function InstallDocker {
         Write-Output "Docker Desktop has been installed successfully"
     }
     catch {
-        Write-Error "An error has been encountered: " + $_.Exception.Message
+        Write-Error ("An error has been encountered: " + $_.Exception.Message)
     }
 }
 function CheckForDocker {
