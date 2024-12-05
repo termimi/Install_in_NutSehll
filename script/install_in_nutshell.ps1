@@ -1,9 +1,16 @@
 # Parameter help description
-[Parameter]
-[string]
-$InstallPath = $(Get-Location).Path
+param(
+    [Parameter(Mandatory=$false, HelpMessage="Indiquer si vous voulez installer Teams et VSCode")]
+    [bool]$CompleteInstall = $true,
+    [Parameter(Mandatory=$false, HelpMessage="Indicate where to install")]
+    [string]$InstallPath = $(Get-Location).Path
+)
 function CheckPsVersion {
     return $PSVersionTable.PSVersion
+}
+function AskUserToAdd {
+    $userToAdd = Read-Host "Please enter the user to add to the docker group"
+    return $userToAdd
 }
 
 function InstallTeams {
@@ -75,16 +82,17 @@ $principalUser = New-Object System.Security.Principal.WindowsPrincipal($currentu
 if (($PowershellVersion.Major -lt 5) -or ($PowershellVersion.Major -lt 7) ) {
     Write-Error "Your version of powershell is to old to execute this script"
 }
-InstallTeams
-InstallVsCode
+if($CompleteInstall){
+    InstallTeams
+    InstallVsCode
+}
 if ($principalUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)){
     try {
         $isDockerHere = CheckForDocker
         if($isDockerHere){
-            $currentuser = $currentuser.Name
-            $username = $currentUser.Split('\')[-1]
+            $userToAdd = AskUserToAdd
             Write-Output "Adding user to docker group"
-            net localgroup docker-users $username /ADD
+            net localgroup docker-users $userToAdd /ADD
             Write-Output "Your user has been added to the docker-users group"
         }
         else {
