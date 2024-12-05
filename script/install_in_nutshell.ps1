@@ -19,13 +19,13 @@ function InstallTeams {
     $downloadLink = "https://go.microsoft.com/fwlink/?linkid=2281613&clcid=0x40c&culture=fr-fr&country=fr"
     try {
         # Téléchargement de l'installer
-        Write-Output "Downloading Microsoft Teams installer..."
+        Write-Host "Downloading Microsoft Teams installer..."
         Invoke-WebRequest -Uri $downloadLink -OutFile $InstallPath -UseBasicParsing
-        Write-Output "Teams installer downloaded to: $InstallPath"
+        Write-Host "Teams installer downloaded to: $InstallPath"
 
-        Write-Output "Installing Microsoft Teams..."
+        Write-Host "Installing Microsoft Teams..."
         Start-Process -FilePath "$InstallPath\MSTeamsSetup.exe"
-        Write-Output "Microsoft Teams has been installed successfully"
+        Write-Host "Microsoft Teams has been installed successfully"
         
         # todo: supprimé le msTeamssetup une fois installé
         #Remove-Item -Path "$InstallPath\MSTeamsSetup.exe" -Force
@@ -38,13 +38,13 @@ function InstallVsCode {
     $downloadLink = "https://vscode.download.prss.microsoft.com/dbazure/download/stable/f1a4fb101478ce6ec82fe9627c43efbf9e98c813/VSCodeUserSetup-x64-1.95.3.exe"
 
     try {
-        Write-Output "Downloading Visual Studio Code installer..."
+        Write-Host "Downloading Visual Studio Code installer..."
         Invoke-WebRequest -Uri $downloadLink -OutFile $InstallPath -UseBasicParsing
-        Write-Output "Visual Studio Code installer downloaded to: $InstallPath"
-        Write-Output "Installing VSCode"
+        Write-Host "Visual Studio Code installer downloaded to: $InstallPath"
+        Write-Host "Installing VSCode"
         #TODO: Faire en sorte de ne pas utiliser le nom de l'installer en harde code mais de le récupérer dans un tableau
         Start-Process -FilePath "$InstallPath\VSCodeUserSetup-x64-1.95.3.exe"
-        Write-Output "VSCode has been installed successfully"
+        Write-Host "VSCode has been installed successfully"
     }
     catch {
         Write-Error ("An error has been encountered: " + $_.Exception.Message)
@@ -54,14 +54,14 @@ function InstallDocker {
     $downloadLink = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module&_gl=1*1mq0u4u*_gcl_au*NjY4NTY5NTgwLjE3MzMzODI3NDg.*_ga*MTgyMDcxMzA3MC4xNzMzMzgyNzQ4*_ga_XJWPQMJYHQ*MTczMzM4Mjc0OC4xLjEuMTczMzM4Mjc3NS4zMy4wLjA."
 
     try {
-        Write-Output "Downloading docker desktop installer..."
+        Write-Host "Downloading docker desktop installer..."
         Invoke-WebRequest -Uri $downloadLink -OutFile $InstallPath -UseBasicParsing
-        Write-Output "docker desktop installer downloaded to: $InstallPath"
-        Write-Output "Installing docker desktop"
+        Write-Host "docker desktop installer downloaded to: $InstallPath"
+        Write-Host "Installing docker desktop"
 
         #TODO: Faire en sorte de ne pas utiliser le nom de l'installer en harde code mais de le récupérer dans un tableau
         Start-Process -FilePath "$InstallPath\Docker Desktop Installer.exe"
-        Write-Output "Docker Desktop has been installed successfully"
+        Write-Host "Docker Desktop has been installed successfully"
     }
     catch {
         Write-Error ("An error has been encountered: " + $_.Exception.Message)
@@ -76,7 +76,17 @@ function CheckForDocker {
         return $false
     }
 }
-
+function AddUserToGroup {
+    param (
+        $UserToAddtoDocker
+    )
+    try {
+        $result = (net localgroup docker-users $UserToAddtoDocker /ADD > $result | Out-String).Trim()
+    }
+    catch {
+        Write-Error ("An error has been encountered: " + $_.Exception.Message)
+    }
+}
 $PowershellVersion = CheckPsVersion
 $currentuser = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 $principalUser = New-Object System.Security.Principal.WindowsPrincipal($currentuser)
@@ -95,9 +105,9 @@ if ($principalUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrat
             if($null -eq $UserToAdd){
                 $userToAdd = AskUserToAdd
             }
-            Write-Output "Adding user to docker group"
-            net localgroup docker-users $userToAdd /ADD
-            Write-Output "Your user has been added to the docker-users group"
+            Write-Host "Adding user to docker group"
+            AddUserToGroup -UserToAddtoDocker $UserToAdd
+            Write-Host "Your user has been added to the docker-users group"
         }
         else {
             InstallDocker
@@ -108,5 +118,5 @@ if ($principalUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrat
     }
 }
 else {
-    Write-Output "Script not used with administrator rights - docker cannot be installed or used"
+    Write-Host "Script not used with administrator rights - docker cannot be installed or used"
 }
