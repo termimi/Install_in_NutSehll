@@ -16,6 +16,7 @@ function InstallTeams {
 
         Write-Output "Installing Microsoft Teams..."
         Start-Process -FilePath "$InstallPath\MSTeamsSetup.exe"
+        Write-Output "Microsoft Teams has been installed successfully"
         
         # todo: supprimé le msTeamssetup une fois installé
         #Remove-Item -Path "$InstallPath\MSTeamsSetup.exe" -Force
@@ -34,6 +35,7 @@ function InstallVsCode {
         Write-Output "Installing VSCode"
         #TODO: Faire en sorte de ne pas utiliser le nom de l'installer en harde code mais de le récupérer dans un tableau
         Start-Process -FilePath "$InstallPath\VSCodeUserSetup-x64-1.95.3.exe"
+        Write-Output "VSCode has been installed successfully"
     }
     catch {
         Write-Error "An error has been encountered: " + $_.Exception.Message
@@ -50,6 +52,7 @@ function InstallDocker {
 
         #TODO: Faire en sorte de ne pas utiliser le nom de l'installer en harde code mais de le récupérer dans un tableau
         Start-Process -FilePath "$InstallPath\Docker Desktop Installer.exe"
+        Write-Output "Docker Desktop has been installed successfully"
     }
     catch {
         Write-Error "An error has been encountered: " + $_.Exception.Message
@@ -80,8 +83,9 @@ if ($principalUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrat
         if($isDockerHere){
             $currentuser = $currentuser.Name
             $username = $currentUser.Split('\')[-1]
-            net localgroup docker-users $username /ADD
             Write-Output "Adding user to docker group"
+            net localgroup docker-users $username /ADD
+            Write-Output "Your user has been added to the docker-users group"
         }
         else {
             InstallDocker
