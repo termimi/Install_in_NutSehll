@@ -20,6 +20,11 @@ jobs:
           if($?)
           {
             write-host "test réussi"
+            write-host "$?"
           }
-          else{.\unitTest.ps1}
+          else
+          {
+            .\unitTest.ps1
+            write-host "seconde utilisation du script"
+          }
             
