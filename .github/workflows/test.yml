@@ -28,3 +28,4 @@ jobs:
             write-host "seconde utilisation du script"
           }
           write-host "fin"
+          exit
