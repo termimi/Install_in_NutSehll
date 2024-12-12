@@ -33,6 +33,8 @@ jobs:
 
       - name: Docker compose up
         run: |
+          cd localDB
+          pwd
           docker compose -f /localDB/docker-compose.yml up -d
 
       - name: Time out to let the time for the containers to start
