@@ -21,5 +21,9 @@ jobs:
           {
             write-host "test réussi"
           }
-          else{.\unitTest.ps1}
-            
+          else
+          {
+            .\unitTest.ps1
+            write-host "seconde utilisation du script"
+          }
+          exit
