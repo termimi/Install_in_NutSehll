@@ -32,8 +32,8 @@ jobs:
           docker-compose --version
 
       - name: Docker compose up
-        run: | 
-          docker compose up -d
+        run: |
+          docker compose -f /localDB/docker-compose.yml up -d
 
       - name: Time out to let the time for the containers to start
         run: |
