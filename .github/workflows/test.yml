@@ -1,0 +1,25 @@
+name: Test Script
+
+on:
+  push:
+    branches:
+    - main
+jobs:
+  test-script:
+    name: Run Script Unit Test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Launch Script Unit Test
+        run: |
+          cd script
+          powershell
+          Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+          .\unitTest.ps1
+          if($?)
+          {
+            write-host "test réussi"
+          }
+          else{.\unitTest.ps1}
+            
