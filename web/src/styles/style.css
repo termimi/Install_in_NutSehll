@@ -1,0 +1,110 @@
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #a8e6cf;
+}
+
+header {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 3em;
+    color: #519c7b;
+}
+
+header p {
+    margin: 10px 0 0;
+    font-size: 1.3em;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.info {
+    margin-top: -10%;
+    font-size: 1.4em;
+    margin-bottom: 2%;
+}
+
+.logos {
+    margin: 30px 0;
+}
+
+.logos h2 {
+    font-size: 1.8em;
+}
+
+.logo-div {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-dark);
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+.logo img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.logo p {
+    margin: 0;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+
+.download {
+    margin-top: 40px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    background-color: #519c7b;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #7cc9a6;
+    transform: scale(1.05);
+}
+
+footer {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9em;
+}
