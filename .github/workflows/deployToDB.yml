@@ -43,9 +43,8 @@ jobs:
         run: |
           docker exec db bash -c "chmod 644 /var/lib/mysql-files/install_in_nutshell.ps1"
           docker exec db bash -c "mysql -uroot -proot -e 'CREATE DATABASE Install_in_NutShell;'"
-          docker exec db bash -c "mysql -uroot -proot -e 'CREATE TABLE Script_file (nom VARCHAR(255), contenu BLOB);'"
-          docker exec db bash -c "mysql -uroot -proot -e \"INSERT INTO Script_file (nom, contenu) VALUES ('install_in_nutshell.ps1', LOAD_FILE('/var/lib/mysql-files/install_in_nutshell.ps1'));\""
-          
+          docker exec db bash -c "mysql -uroot -proot -D Install_in_NutShell -e 'CREATE TABLE Script_file (nom VARCHAR(255), contenu BLOB);'"
+          docker exec db bash -c "mysql -uroot -proot -D Install_in_NutShell -e \"INSERT INTO Script_file (nom, contenu) VALUES ('install_in_nutshell.ps1', LOAD_FILE('/var/lib/mysql-files/install_in_nutshell.ps1'));\""          
           
         
           
