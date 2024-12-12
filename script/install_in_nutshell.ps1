@@ -51,20 +51,27 @@ function InstallVsCode {
     }
 }
 function InstallDocker {
-    $downloadLink = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module&_gl=1*1mq0u4u*_gcl_au*NjY4NTY5NTgwLjE3MzMzODI3NDg.*_ga*MTgyMDcxMzA3MC4xNzMzMzgyNzQ4*_ga_XJWPQMJYHQ*MTczMzM4Mjc0OC4xLjEuMTczMzM4Mjc3NS4zMy4wLjA."
-
-    try {
-        Write-Host "Downloading docker desktop installer..."
-        Invoke-WebRequest -Uri $downloadLink -OutFile $InstallPath -UseBasicParsing
-        Write-Host "docker desktop installer downloaded to: $InstallPath"
-        Write-Host "Installing docker desktop"
-
-        #TODO: Faire en sorte de ne pas utiliser le nom de l'installer en harde code mais de le récupérer dans un tableau
-        Start-Process -FilePath "$InstallPath\Docker Desktop Installer.exe"
-        Write-Host "Docker Desktop has been installed successfully"
+    $installerName = "Docker Desktop Installer.exe"
+    $installerPath = Join-Path $InstallPath $installerName
+    if(Test-Path $installerPath){
+        Write-Host "Docker Desktop installer already exists at: $installerPath"
     }
-    catch {
-        Write-Error ("An error has been encountered: " + $_.Exception.Message)
+    else{
+        $downloadLink = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module&_gl=1*1mq0u4u*_gcl_au*NjY4NTY5NTgwLjE3MzMzODI3NDg.*_ga*MTgyMDcxMzA3MC4xNzMzMzgyNzQ4*_ga_XJWPQMJYHQ*MTczMzM4Mjc0OC4xLjEuMTczMzM4Mjc3NS4zMy4wLjA."
+
+        try {
+            Write-Host "Downloading docker desktop installer..."
+            Invoke-WebRequest -Uri $downloadLink -OutFile $InstallPath -UseBasicParsing
+            Write-Host "docker desktop installer downloaded to: $InstallPath"
+            Write-Host "Installing docker desktop"
+    
+            #TODO: Faire en sorte de ne pas utiliser le nom de l'installer en harde code mais de le récupérer dans un tableau
+            Start-Process -FilePath "$InstallPath\Docker Desktop Installer.exe"
+            Write-Host "Docker Desktop has been installed successfully"
+        }
+        catch {
+            Write-Error ("An error has been encountered: " + $_.Exception.Message)
+        }
     }
 }
 function CheckForDocker {
