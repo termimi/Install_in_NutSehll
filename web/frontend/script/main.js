@@ -1,5 +1,5 @@
 document.getElementById("button").addEventListener("click", function () {
-    const downloadUrl = "http://localhost:3000/download";
+    const downloadUrl = "/download";
 
     const link = document.createElement("a");
     link.href = downloadUrl;
