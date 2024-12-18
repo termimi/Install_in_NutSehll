@@ -10,9 +10,9 @@ app.use(cors());
 
 
 const db = mysql.createConnection({
-    hostname: "nutshelllinuxserver.mysql.database.azure.com",
-    user: "jnuwdjotyo", 
-    password: "root", 
+    host: "nutshelllinuxserver.mysql.database.azure.com",
+    user: "rootShell", 
+    password: "admin347.", 
     database: "install_in_nutShell",
     port: 3306
 });
