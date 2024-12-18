@@ -41,6 +41,7 @@ jobs:
           pwd
           ls
           pwd
+          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -e "SELECT LOAD_FILE('/home/runner/work/Install_in_NutShell/Install_in_NutShell/localDb/install_in_nutshell.ps1');"
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS install_in_nutShell;"
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "INSERT INTO Script_file (nom, contenu) VALUES ('install_in_nutshell.ps1', LOAD_FILE('/home/runner/work/Install_in_NutShell/Install_in_NutShell/localDb/install_in_nutshell.ps1'));"
           
