@@ -23,29 +23,27 @@ jobs:
           echo "This commit contains 'feat'. Running the workflow..."
           echo "Running=true" >> $GITHUB_ENV
           
-      - name: Install docker compose 
+      - name: Install MySQl Client
         if: ${{ env.RUNNING == 'true' }} 
         run: |
           cd localDB
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-      - name: Docker compose up
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt install -y mysql-client
+          mysql --version
+        
+      - name: Push Script to DB
+        env:
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_HOST: ${{secrets.MYSQL_HOST}}
         run: |
-          docker compose -f localDb/docker-compose.yml up -d
-
-      - name: Time out to let the time for the containers to start
-        run: |
-         sleep 30
-                     
-      - name: Insert script to DB
-        run: |
-          docker exec db bash -c "chmod 644 /var/lib/mysql-files/install_in_nutshell.ps1"
-          docker exec db bash -c "mysql -uroot -proot -e 'CREATE DATABASE Install_in_NutShell;'"
-          docker exec db bash -c "mysql -uroot -proot -D Install_in_NutShell -e 'CREATE TABLE Script_file (nom VARCHAR(255), contenu BLOB);'"
-          docker exec db bash -c "mysql -uroot -proot -D Install_in_NutShell -e \"INSERT INTO Script_file (nom, contenu) VALUES ('install_in_nutshell.ps1', LOAD_FILE('/var/lib/mysql-files/install_in_nutshell.ps1'));\""          
-          
+          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD
+          CREATE DATABASE IF NOT EXISTS Install_in_NutShell;
+          USE Install_in_NutShell
+          CREATE TABLE Script_file (nom VARCHAR(255), contenu BLOB);
+          INSERT INTO Script_file (nom, contenu) VALUES ('install_in_nutshell.ps1', LOAD_FILE('localDb/install_in_nutshell.ps1'));
+          exit
         
           
 
