@@ -38,6 +38,9 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_HOST: ${{secrets.MYSQL_HOST}}
         run: |
+          cd localDB
+          ls
+          pwd
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS install_in_nutShell;"
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "INSERT INTO Script_file (nom, contenu) VALUES ('install_in_nutshell.ps1', LOAD_FILE('localDb/install_in_nutshell.ps1'));"
           
