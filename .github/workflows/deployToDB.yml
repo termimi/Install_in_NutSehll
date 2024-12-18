@@ -38,6 +38,7 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_HOST: ${{secrets.MYSQL_HOST}}
         run: |
+          pwd
           cd localDB
           ls
           pwd
