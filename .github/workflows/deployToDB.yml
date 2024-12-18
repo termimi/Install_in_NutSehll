@@ -39,7 +39,6 @@ jobs:
           MYSQL_HOST: ${{secrets.MYSQL_HOST}}
         run: |
           pwd
-          cd localDB
           ls
           pwd
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS install_in_nutShell;"
