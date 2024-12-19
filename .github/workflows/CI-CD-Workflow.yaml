@@ -56,12 +56,16 @@ jobs:
         run: |
           cd script
           .\unitTest.ps1
-          if($?) {
+          if($?) 
+          {
             Write-Host "Tests Passed"
-          } else {
+          } 
+          else 
+          {
             Write-Host "Tests Failed"
             exit 1
           }
+          exit
 
   deploy-db:
     name: Deploy DB
