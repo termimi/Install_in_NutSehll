@@ -61,7 +61,7 @@ jobs:
           .\unitTest.ps1
           if ($?) 
           {
-            echo "::set-output name=tests_passed::true"
+            echo "::set-output name=tests_passed::false"
             Write-Host "Tests Passed"
           } 
           else
