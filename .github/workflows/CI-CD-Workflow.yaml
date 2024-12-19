@@ -20,10 +20,11 @@ jobs:
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           echo "COMMIT_MESSAGE=$COMMIT_MESSAGE"
-          if [[ $COMMIT_MESSAGE == *"feat"* ]]; then
+          if [[ "$COMMIT_MESSAGE" == *"feat"* ]]; then
             echo "::set-output name=run_workflow::true"
           else
             echo "::set-output name=run_workflow::false"
+          fi
 
   run-tests:
     name: Run Tests
