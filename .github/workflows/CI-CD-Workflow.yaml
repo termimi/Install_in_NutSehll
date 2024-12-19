@@ -148,7 +148,8 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'NutShellStaging'
-          slot-name: 'Pre-Production'
+         # Pré-production, mais écrit "Production" à cause des limites de notre tarifs.
+          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_469CC57B2B9E4D39B2B6EDCDC9879EE7 }}
           package: .
 
