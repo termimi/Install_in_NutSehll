@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       run_workflow: ${{ steps.commit_check.outputs.run_workflow }}
+      deploy_azure: ${{ steps.commit_check.outputs.deploy_azure }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -22,10 +23,18 @@ jobs:
           echo "COMMIT_MESSAGE=$COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"feat"* ]]; then
             echo "::set-output name=run_workflow::true"
-            echo "New feature detected"
+            echo "Feature detected"
           else
             echo "::set-output name=run_workflow::false"
             echo "No feature detected"
+          fi
+
+          if [[ "$COMMIT_MESSAGE" == *"feat"* && "$COMMIT_MESSAGE" == *"web"* ]]; then
+            echo "::set-output name=deploy_azure::true"
+            echo "Web Feature detected"
+          else
+            echo "::set-output name=deploy_azure::false"
+            echo "No Web Feature detected"
           fi
 
   run-tests:
@@ -82,7 +91,7 @@ jobs:
   deploy-azure:
     name: Deploy Azure
     needs: deploy-db
-    if: success()
+    if: ${{ needs.check-commit.outputs.deploy_azure == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
