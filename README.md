@@ -70,11 +70,6 @@ Les contributions sont les bienvenues ! Pour contribuer :
    git push origin feature/ma-fonctionnalite
    ```
 5. **Ouvrez une Pull Request**.
-
-## Licence
-
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](./LICENSE) pour plus de détails.
-
 ---
 
 *Dernière mise à jour : 19 décembre 2024*
