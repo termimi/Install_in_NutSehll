@@ -101,7 +101,7 @@ jobs:
   build-staging:
     name: Build Staging
     runs-on: ubuntu-latest
-    needs: deploy-db
+    needs: run-tests
     if: ${{ needs.run-tests.outputs.tests_passed == 'false' }}
     steps:
       - uses: actions/checkout@v4
