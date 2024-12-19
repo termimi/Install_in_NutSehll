@@ -54,6 +54,7 @@ jobs:
 
       - name: Run Unit Tests
         run: |
+          cd script
           .\unitTest.ps1
           if($?) {
             Write-Host "Tests Passed"
