@@ -38,12 +38,11 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_HOST: ${{secrets.MYSQL_HOST}}
         run: |
-          pwd
-          ls
-          pwd
-          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -e "SELECT LOAD_FILE('/home/runner/work/Install_in_NutShell/Install_in_NutShell/localDb/install_in_nutshell.ps1');"
+          SCRIPT_CONTENT=$(cat script/install_in_nutshell.ps1 | base64)
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS install_in_nutShell;"
-          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "INSERT INTO Script_file (nom, contenu) VALUES ('install_in_nutshell.ps1', LOAD_FILE('/home/runner/work/Install_in_NutShell/Install_in_NutShell/localDb/install_in_nutshell.ps1'));"
+          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "DROP TABLE IF EXISTS script_file"
+          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "CREATE TABLE IF NOT EXISTS script_file"
+          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "INSERT INTO Script_file (nom, contenu) VALUES ('install_in_nutshell.ps1', FROM_BASE64('$SCRIPT_CONTENT'));"
           
 
       
