@@ -95,8 +95,8 @@ jobs:
           SCRIPT_CONTENT=$(cat script/install_in_nutshell.ps1 | base64)
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS install_in_nutShell;"
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "DROP TABLE IF EXISTS script_file;"
-          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "CREATE TABLE IF NOT EXISTS script_file (name VARCHAR(255), content BLOB);"
-          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "INSERT INTO script_file (name, content) VALUES ('install_in_nutshell.ps1', FROM_BASE64('$SCRIPT_CONTENT'));"
+          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "CREATE TABLE IF NOT EXISTS script_file (nom VARCHAR(255), contenu BLOB);"
+          mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "INSERT INTO script_file (nom, contenu) VALUES ('install_in_nutshell', FROM_BASE64('$SCRIPT_CONTENT'));"
           echo "Script Injected !"
 
   build-staging:
