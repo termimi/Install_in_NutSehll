@@ -50,8 +50,6 @@ Les workflows CI/CD sont configurés pour déployer automatiquement le site web 
 
 ## Captures d'écran
 
-![Interface du site web](./screenshots/interface_site_web.png)
-
 ![image](https://github.com/user-attachments/assets/c5217612-f9be-4789-a529-0b7f767f11ca)
 
 ## Contribution
