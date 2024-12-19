@@ -1,4 +1,4 @@
-name: CI-CD Workflow
+name: CI/CD Workflow
 
 on:
   push:
@@ -9,6 +9,8 @@ jobs:
   check-commit:
     name: Check Commit
     runs-on: ubuntu-latest
+    outputs:
+      run_workflow: ${{ steps.commit_check.outputs.run_workflow }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -17,16 +19,16 @@ jobs:
         id: commit_check
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE"
           if [[ $COMMIT_MESSAGE == *"feat"* ]]; then
-            echo "RUN_WORKFLOW=true" >> $GITHUB_ENV
+            echo "::set-output name=run_workflow::true"
           else
-            echo "RUN_WORKFLOW=false" >> $GITHUB_ENV
+            echo "::set-output name=run_workflow::false"
 
   run-tests:
     name: Run Tests
     needs: check-commit
-    if: env.RUN_WORKFLOW == 'true'
+    if: ${{ needs.check-commit.outputs.run_workflow == 'true' }}
     runs-on: windows-latest
     steps:
       - name: Checkout Code
@@ -41,12 +43,9 @@ jobs:
       - name: Run Unit Tests
         run: |
           .\unitTest.ps1
-          if($?) 
-          {
+          if($?) {
             Write-Host "Tests Passed"
-          } 
-          else 
-          {
+          } else {
             Write-Host "Tests Failed"
             exit 1
           }
@@ -78,7 +77,7 @@ jobs:
           mysql -h $MYSQL_HOST -u $MYSQL_USERNAME -p$MYSQL_PASSWORD -D install_in_nutShell -e "INSERT INTO script_file (name, content) VALUES ('install_in_nutshell', FROM_BASE64('$SCRIPT_CONTENT'));"
 
   deploy-azure:
-    name: Build Azure
+    name: Deploy Azure
     needs: deploy-db
     if: success()
     runs-on: ubuntu-latest
