@@ -22,8 +22,10 @@ jobs:
           echo "COMMIT_MESSAGE=$COMMIT_MESSAGE"
           if [[ "$COMMIT_MESSAGE" == *"feat"* ]]; then
             echo "::set-output name=run_workflow::true"
+            echo "New feature detected"
           else
             echo "::set-output name=run_workflow::false"
+            echo "No feature detected"
           fi
 
   run-tests:
